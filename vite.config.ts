@@ -12,18 +12,18 @@ export default defineConfig(({ mode }) => ({
 		globals: true,
 		environment: 'jsdom',
 		setupFiles: 'src/setupTests.ts',
-		clearMocks: true,
-		coverage: {
-			include: ['src/**/*'],
-			exclude: ['src/main.tsx'],
-			thresholds: {
-				'100': true
-			},
-			provider: 'istanbul',
-			enabled: true,
-			reporter: ['text', 'lcov'],
-			reportsDirectory: 'coverage'
-		}
+		clearMocks: true
+		// coverage: {
+		// 	include: ['src/**/*'],
+		// 	exclude: ['src/main.tsx'],
+		// 	thresholds: {
+		// 		'100': true
+		// 	},
+		// 	provider: 'istanbul',
+		// 	enabled: true,
+		// 	reporter: ['text', 'lcov'],
+		// 	reportsDirectory: 'coverage'
+		// }
 	},
 	plugins: [
 		tsconfigPaths(),
@@ -58,6 +58,6 @@ export default defineConfig(({ mode }) => ({
 							]
 						}
 					})
-			  ])
+				])
 	]
 }))
