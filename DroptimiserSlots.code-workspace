@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"javascript.format.enable": false,
+		"typescript.disableAutomaticTypeAcquisition": true,
+		"typescript.tsdk": "node_modules/typescript/lib"
+	}
+}
