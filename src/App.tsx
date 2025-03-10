@@ -3,17 +3,16 @@ import type { ReactElement } from 'react'
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-// const Gallery = lazy(async () => import('pages/Gallery'))
-// const Details = lazy(async () => import('pages/Details'))
-const Report = lazy(async () => import('pages/Report'))
+const ReportSelector = lazy(async () => import('ReportSelector'))
+const ReportLoader = lazy(async () => import('ReportLoader'))
 
 export default function App(): ReactElement {
 	return (
 		<BrowserRouter>
 			<Suspense fallback={<LoadingOrError />}>
 				<Routes>
-					<Route path='/' element={<Report />} />
-					{/* <Route path=':fruitName' element={<Details />} /> */}
+					<Route path='/' element={<ReportSelector />} />
+					<Route path=':reportHash' element={<ReportLoader />} />
 				</Routes>
 			</Suspense>
 		</BrowserRouter>
