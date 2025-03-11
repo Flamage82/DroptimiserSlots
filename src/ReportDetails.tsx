@@ -5,7 +5,6 @@ export interface RaidBotsReport {
 	sim: {
 		profilesets: {
 			results: {
-				// id: number
 				name: string
 				mean: number
 			}[]

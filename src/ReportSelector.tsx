@@ -8,35 +8,10 @@ const reportUrlRegex =
 
 export default function ReportSelector(): ReactNode {
 	const [reportUrl, setReportUrl] = useState(
-		'https://www.raidbots.com/simbot/report/jxmyHRqGFghsshiFAeUXn8'
+		'https://www.raidbots.com/simbot/report/...'
 	)
 
-	// const [slots, setSlots] = useState<[string, Item[]][]>()
-
 	const reportHash = reportUrlRegex.exec(reportUrl)?.groups?.hash
-
-	// const onClick = useCallback(async () => {
-	// 	if (!isValid)
-	// 		return
-
-	// 	const matches = reportUrlRegex.exec(reportUrl)
-	// 	const hash = matches?.groups?.hash
-
-	// 	const response = await fetch(`https://www.raidbots.com/reports/${hash}/data.json`)
-
-	// 	const result = await response.json() as RaidBotsReport
-
-	// 	const items = result.sim.profilesets.results.map(r => {
-	// 		const itemMatches = itemRegex.exec(r.name)
-	// 		return {
-	// 			...itemMatches?.groups as unknown as ItemRegexGroups,
-	// 			item: r
-	// 		}
-	// 	})
-
-	// 	const newSlots: [string, Item[]][] = orderBy(toPairs(mapValues(groupBy(items, r => r.slot), slot => orderBy(slot, r => r.item.mean, 'desc'))), ([, groupedSlotItems]) => groupedSlotItems[0].item.mean, 'desc')
-	// 	setSlots(newSlots)
-	// }, [isValid, reportUrl])
 
 	const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
 		setReportUrl(event.target.value)
@@ -53,7 +28,7 @@ export default function ReportSelector(): ReactNode {
 					)}
 					id='report'
 					type='text'
-					placeholder='Type something...'
+					placeholder='https://www.raidbots.com/simbot/report/...'
 					value={reportUrl}
 					onChange={onChange}
 				/>
