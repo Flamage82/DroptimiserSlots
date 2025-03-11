@@ -1,21 +1,11 @@
 import LoadingOrError from 'components/LoadingOrError'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useParams } from 'react-router-dom'
+import type { RaidBotsReport } from 'ReportDetails'
 import ReportDetails from 'ReportDetails'
 
 interface LoaderParameters extends Record<string, string | undefined> {
 	reportHash: string
-}
-
-export interface RaidBotsReport {
-	sim: {
-		profilesets: {
-			results: {
-				name: string
-				mean: number
-			}[]
-		}
-	}
 }
 
 export default function ReportLoader(): ReactNode {
