@@ -4,7 +4,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"scripts": {
-		"build": "vite build --base=/DroptimiserSlots/",
+		"build": "vite build",
 		"commit": "cz",
 		"dev": "vite --open",
 		"prepare": "husky install",
