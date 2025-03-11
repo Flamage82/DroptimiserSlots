@@ -71,11 +71,17 @@ export default function ReportDetails({
 					slot => orderBy(slot, r => r.item.mean, 'desc')
 				)
 			),
-			([, groupedSlotItems]) => groupedSlotItems[0].item.mean,
-			'desc'
+			([, groupedSlotItems]) =>
+				orderByBoss
+					? groupedSlotItems[0].itemDetails?.instance.encounters.find(
+							encounter =>
+								encounter.id.toString() === groupedSlotItems[0].encounterId
+						)?.id
+					: groupedSlotItems[0].item.mean,
+			orderByBoss ? 'asc' : 'desc'
 		)
 		return newSlots
-	}, [report])
+	}, [report, orderByBoss])
 
 	const onChange = useCallback(
 		() => setOrderByBoss(!orderByBoss),
@@ -83,20 +89,23 @@ export default function ReportDetails({
 	)
 
 	return (
-		<div>
-			<label htmlFor='sortByBoss'>
-				Sort by boss:
-				<input
-					id='sortByBoss'
-					type='checkbox'
-					checked={orderByBoss}
-					onChange={onChange}
-				/>
-			</label>
+		<div className='m-4'>
+			<div className='mb-4'>
+				<label htmlFor='sortByBoss'>
+					Sort by boss:
+					<input
+						className='ml-2'
+						id='sortByBoss'
+						type='checkbox'
+						checked={orderByBoss}
+						onChange={onChange}
+					/>
+				</label>
+			</div>
 			{slots.map(([name, items]) => (
-				<div className='flex' key={name}>
-					<div className='w-64 flex-none'>{name}</div>
-					<div className='w-64 flex-none'>
+				<div className='flex gap-8' key={name}>
+					<div className='w-32 flex-none'>{name}</div>
+					<div className='w-[512px] flex-none'>
 						<a
 							href={`https://www.wowhead.com/item=${items[0].itemId}`}
 							className='q3'
@@ -105,8 +114,11 @@ export default function ReportDetails({
 							{items[0].itemDetails?.name}
 						</a>
 					</div>
-					<div className='w-64 flex-none'>
-						{items[0].item.mean - report.sim.statistics.raid_dps.mean}
+					<div className='w-64 flex-none text-right'>
+						{(
+							items[0].item.mean - report.sim.statistics.raid_dps.mean
+						).toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
+						dps
 					</div>
 					<div className='w-64 flex-none'>
 						{
