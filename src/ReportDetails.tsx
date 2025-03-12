@@ -68,23 +68,23 @@ const sortByOptions = [
 	}
 ]
 
-const slotOrder: Record<string, number> = {
-	main_hand: 1,
-	off_hand: 2,
-	head: 3,
-	neck: 4,
-	shoulder: 5,
-	back: 6,
-	chest: 7,
-	wrist: 8,
-	hands: 9,
-	waist: 10,
-	legs: 11,
-	feet: 12,
-	finger1: 13,
-	finger2: 14,
-	trinket1: 15,
-	trinket2: 16
+const slotOrder: Record<string, { index: number; label: string }> = {
+	main_hand: { index: 1, label: 'Main Hand' },
+	off_hand: { index: 2, label: 'Off Hand' },
+	head: { index: 3, label: 'Head' },
+	neck: { index: 4, label: 'Neck' },
+	shoulder: { index: 5, label: 'Shoulder' },
+	back: { index: 6, label: 'Back' },
+	chest: { index: 7, label: 'Chest' },
+	wrist: { index: 8, label: 'Wrist' },
+	hands: { index: 9, label: 'Hands' },
+	waist: { index: 10, label: 'Waist' },
+	legs: { index: 11, label: 'Legs' },
+	feet: { index: 12, label: 'Feet' },
+	finger1: { index: 13, label: 'Finger 1' },
+	finger2: { index: 14, label: 'Finger 2' },
+	trinket1: { index: 15, label: 'Trinket 1' },
+	trinket2: { index: 16, label: 'Trinket 2' }
 }
 
 export default function ReportDetails({
@@ -149,7 +149,7 @@ export default function ReportDetails({
 				)
 			}
 			case 'slot': {
-				return orderBy(filteredSlots, ([slot]) => slotOrder[slot], 'asc')
+				return orderBy(filteredSlots, ([slot]) => slotOrder[slot].index, 'asc')
 			}
 			case 'boss': {
 				return orderBy(
@@ -191,7 +191,7 @@ export default function ReportDetails({
 			</div>
 			{slots.map(([name, item]) => (
 				<div className='my-1 flex items-center gap-4' key={name}>
-					<div className='w-32 flex-none'>{name}</div>
+					<div className='w-32 flex-none'>{slotOrder[item.slot].label}</div>
 					<div className='w-[384px] flex-none'>
 						<a
 							target='_blank'
