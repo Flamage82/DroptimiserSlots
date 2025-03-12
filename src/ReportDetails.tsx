@@ -65,13 +65,31 @@ export default function ReportDetails({
 			}
 		})
 
+		const groupedSlots = toPairs(
+			mapValues(
+				groupBy(items, r => r.slot),
+				slot => orderBy(slot, r => r.item.mean, 'desc')
+			)
+		)
+
+		const filteredSlots = groupedSlots.map(
+			([slot, groupedSlotItems]) =>
+				[
+					slot,
+					slot.endsWith('2')
+						? groupedSlotItems.filter(
+								item =>
+									item.itemId !==
+									groupedSlots.find(
+										([otherSlot]) => otherSlot === `${slot.slice(0, -1)}1`
+									)?.[1][0].itemId
+							)
+						: groupedSlotItems
+				] as const
+		)
+
 		const newSlots = orderBy(
-			toPairs(
-				mapValues(
-					groupBy(items, r => r.slot),
-					slot => orderBy(slot, r => r.item.mean, 'desc')
-				)
-			),
+			filteredSlots,
 			([, groupedSlotItems]) =>
 				orderByBoss
 					? groupedSlotItems[0].itemDetails?.instance.encounters.find(
