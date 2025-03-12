@@ -28,6 +28,16 @@ export default function ReportSelector(): ReactNode {
 
 	return (
 		<div className='m-2'>
+			<p>
+				Generate a Raidbots Droptimizer report (
+				<a href='https://www.raidbots.com/simbot/droptimizer'>
+					https://www.raidbots.com/simbot/droptimizer
+				</a>
+				) and paste the URL of the report once it`s done.
+			</p>
+			<p className='mb-2'>
+				Click the load button to retrieve and process the report.
+			</p>
 			<div className='flex w-auto gap-2'>
 				<label className='' htmlFor='report'>
 					Report URL:
