@@ -1,5 +1,6 @@
 import { groupBy, mapValues, orderBy, toPairs } from 'lodash'
-import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 export interface RaidBotsReport {
 	sim: {
@@ -14,6 +15,9 @@ export interface RaidBotsReport {
 				mean: number
 			}
 		}
+		players: {
+			gear: Record<string, unknown>
+		}[]
 	}
 	simbot: {
 		meta: {
@@ -46,12 +50,48 @@ interface ItemRegexGroups {
 	slot: string
 }
 
+type SortByOptions = 'boss' | 'dps' | 'slot'
+
+const sortByOptions = [
+	{
+		label: 'DPS',
+		value: 'dps'
+	},
+	{
+		label: 'Boss',
+		value: 'boss'
+	},
+	{
+		label: 'Slot',
+		value: 'slot'
+	}
+]
+
+const slotOrder: Record<string, number> = {
+	main_hand: 1,
+	off_hand: 2,
+	head: 3,
+	neck: 4,
+	shoulder: 5,
+	back: 6,
+	chest: 7,
+	wrist: 8,
+	hands: 9,
+	waist: 10,
+	legs: 11,
+	feet: 12,
+	finger1: 13,
+	finger2: 14,
+	trinket1: 15,
+	trinket2: 16
+}
+
 export default function ReportDetails({
 	report
 }: {
 	report: RaidBotsReport
 }): ReactNode {
-	const [orderByBoss, setOrderByBoss] = useState(false)
+	const [sortBy, setSortBy] = useState<SortByOptions>('dps')
 
 	const slots = useMemo(() => {
 		const items = report.sim.profilesets.results.map(r => {
@@ -88,38 +128,58 @@ export default function ReportDetails({
 				] as const
 		)
 
-		const newSlots = orderBy(
-			filteredSlots,
-			([, groupedSlotItems]) =>
-				orderByBoss
-					? groupedSlotItems[0].itemDetails?.instance.encounters.find(
+		switch (sortBy) {
+			case 'dps': {
+				return orderBy(
+					filteredSlots,
+					([, groupedSlotItems]) => groupedSlotItems[0].item.mean,
+					'desc'
+				)
+			}
+			case 'slot': {
+				return orderBy(filteredSlots, ([slot]) => slotOrder[slot], 'asc')
+			}
+			case 'boss': {
+				return orderBy(
+					filteredSlots,
+					([, groupedSlotItems]) =>
+						groupedSlotItems[0].itemDetails?.instance.encounters.find(
 							encounter =>
 								encounter.id.toString() === groupedSlotItems[0].encounterId
-						)?.id
-					: groupedSlotItems[0].item.mean,
-			orderByBoss ? 'asc' : 'desc'
-		)
-		return newSlots
-	}, [report, orderByBoss])
+						)?.id,
+					'asc'
+				)
+			}
+			default: {
+				throw new Error(`Unknown sortBy option`)
+			}
+		}
+	}, [report, sortBy])
 
 	const onChange = useCallback(
-		() => setOrderByBoss(!orderByBoss),
-		[orderByBoss]
+		(event: ChangeEvent<HTMLInputElement>) =>
+			setSortBy(event.target.value as SortByOptions),
+		[setSortBy]
 	)
 
 	return (
 		<div className='mt-4'>
-			<div className='mb-4'>
-				<label htmlFor='sortByBoss'>
-					Sort by boss:
-					<input
-						className='ml-2'
-						id='sortByBoss'
-						type='checkbox'
-						checked={orderByBoss}
-						onChange={onChange}
-					/>
-				</label>
+			<div className='mb-4 flex items-center'>
+				Sort by:
+				{sortByOptions.map(option => (
+					<label htmlFor={option.value} key={option.value}>
+						<input
+							className='mb-1 ml-4 mr-1'
+							id={option.value}
+							name='sortBy'
+							type='radio'
+							value={option.value}
+							checked={sortBy === option.value}
+							onChange={onChange}
+						/>
+						{option.label}
+					</label>
+				))}
 			</div>
 			{slots.map(([name, items]) => (
 				<div className='my-1 flex items-center gap-4' key={name}>
