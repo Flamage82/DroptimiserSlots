@@ -20,6 +20,7 @@ export interface RaidBotsReport {
 			itemLibrary: {
 				id: number
 				name: string
+				icon: string
 				instance: {
 					encounters: {
 						id: number
@@ -103,18 +104,23 @@ export default function ReportDetails({
 				</label>
 			</div>
 			{slots.map(([name, items]) => (
-				<div className='flex gap-8' key={name}>
+				<div className='my-1 flex items-center gap-4' key={name}>
 					<div className='w-32 flex-none'>{name}</div>
-					<div className='w-[512px] flex-none'>
+					<div className='w-[384px] flex-none'>
 						<a
 							href={`https://www.wowhead.com/item=${items[0].itemId}`}
 							className='q3'
 							data-wowhead={`ilvl=${items[0].ilvl}`}
 						>
+							<img
+								alt=''
+								className='mr-2 inline'
+								src={`https://wow.zamimg.com/images/wow/icons/medium/${items[0].itemDetails?.icon}.jpg`}
+							/>
 							{items[0].itemDetails?.name}
 						</a>
 					</div>
-					<div className='w-64 flex-none text-right'>
+					<div className='w-32 flex-none text-right'>
 						{(
 							items[0].item.mean - report.sim.statistics.raid_dps.mean
 						).toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
