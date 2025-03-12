@@ -28,6 +28,7 @@ export interface RaidBotsReport {
 				}
 			}[]
 		}
+		simType: string
 	}
 }
 
@@ -88,7 +89,7 @@ export default function ReportDetails({
 	)
 
 	return (
-		<div className='m-4'>
+		<div className='mt-4'>
 			<div className='mb-4'>
 				<label htmlFor='sortByBoss'>
 					Sort by boss:

@@ -1,16 +1,13 @@
 import LoadingOrError from 'components/LoadingOrError'
 import { useEffect, useState, type ReactNode } from 'react'
-import { useParams } from 'react-router-dom'
 import type { RaidBotsReport } from 'ReportDetails'
 import ReportDetails from 'ReportDetails'
 
-interface LoaderParameters extends Record<string, string | undefined> {
+export default function ReportLoader({
+	reportHash
+}: {
 	reportHash: string
-}
-
-export default function ReportLoader(): ReactNode {
-	const { reportHash } = useParams<LoaderParameters>()
-
+}): ReactNode {
 	const [report, setReport] = useState<RaidBotsReport>()
 
 	useEffect(() => {
@@ -25,5 +22,9 @@ export default function ReportLoader(): ReactNode {
 		void fetchReport()
 	}, [reportHash])
 
-	return report ? <ReportDetails report={report} /> : <LoadingOrError />
+	if (!report) return <LoadingOrError />
+
+	if (report.simbot.simType !== 'droptimizer') return 'Not a droptimizer report'
+
+	return <ReportDetails report={report} />
 }
