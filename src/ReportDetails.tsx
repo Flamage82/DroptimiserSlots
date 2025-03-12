@@ -186,9 +186,11 @@ export default function ReportDetails({
 					<div className='w-32 flex-none'>{name}</div>
 					<div className='w-[384px] flex-none'>
 						<a
+							target='_blank'
 							href={`https://www.wowhead.com/item=${items[0].itemId}`}
 							className='q3'
 							data-wowhead={`ilvl=${items[0].ilvl}`}
+							rel='noreferrer'
 						>
 							<img
 								alt=''

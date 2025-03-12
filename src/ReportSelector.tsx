@@ -33,7 +33,7 @@ export default function ReportSelector(): ReactNode {
 					Report URL:
 					<input
 						className={classNames(
-							'ml-2 w-[600px]',
+							'ml-2 w-[600px] text-gray-900',
 							reportUrl.length > 0 && !reportHash && 'border-red-500'
 						)}
 						id='report'
