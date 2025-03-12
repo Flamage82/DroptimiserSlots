@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { groupBy, mapValues, orderBy, toPairs } from 'lodash'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useCallback, useMemo, useState } from 'react'
@@ -207,7 +208,12 @@ export default function ReportDetails({
 							{item.name}
 						</a>
 					</div>
-					<div className='w-32 flex-none text-right'>
+					<div
+						className={classNames(
+							'w-32 flex-none text-right',
+							item.dpsChange <= 0 && 'text-red-500'
+						)}
+					>
 						{item.dpsChange > 0 ? '+' : ''}
 						{item.dpsChange.toLocaleString(undefined, {
 							maximumFractionDigits: 0
